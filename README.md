@@ -43,6 +43,7 @@ Conexión a internet (solo para las llamadas a la API de Groq)
 1. Clona el repositorio
 
 git clone https://github.com/zafiro-exploit/-AXIOM-Reporter
+
 cd axiom-reporter
 
 2. Instala las dependencias
