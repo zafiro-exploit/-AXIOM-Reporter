@@ -42,12 +42,12 @@ Conexión a internet (solo para las llamadas a la API de Groq)
 
 1. Clona el repositorio
 
-bashgit clone https://github.com/zafiro-exploit/-AXIOM-Reporter
+git clone https://github.com/zafiro-exploit/-AXIOM-Reporter
 cd axiom-reporter
 
 2. Instala las dependencias
 
-bashpip install flask flask-cors requests
+pip install flask flask-cors requests
 
 3. Obtén tu API key de Groq (gratis)
 
@@ -62,22 +62,22 @@ Copia tu key (empieza por gsk_...)
 
 Linux / Mac:
 
-bashexport GROQ_API_KEY="gsk_TU_KEY_AQUI"
+export GROQ_API_KEY="gsk_TU_KEY_AQUI"
 
 Para hacerlo permanente añádelo a tu ~/.bashrc o ~/.zshrc:
 
-bashecho 'export GROQ_API_KEY="gsk_TU_KEY_AQUI"' >> ~/.bashrc
+echo 'export GROQ_API_KEY="gsk_TU_KEY_AQUI"' >> ~/.bashrc
 source ~/.bashrc
 
 Windows (PowerShell):
 
-powershell[System.Environment]::SetEnvironmentVariable("GROQ_API_KEY","gsk_TU_KEY_AQUI","User")
+[System.Environment]::SetEnvironmentVariable("GROQ_API_KEY","gsk_TU_KEY_AQUI","User")
 
 Cierra y vuelve a abrir PowerShell para que se aplique.
 
 5. Lanza la app
 
-bashpython app.py
+python app.py
 
 El navegador se abrirá automáticamente en http://localhost:5000
 
