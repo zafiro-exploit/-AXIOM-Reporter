@@ -1,174 +1,192 @@
-# -AXIOM-Reporter
-¿Qué es AXIOM Reporter?  AXIOM Reporter es una herramienta de documentación asistida por IA diseñada para pentesters y estudiantes de ciberseguridad. Permite generar informes profesionales de forma automática mientras avanzas en una máquina (HackTheBox, TryHackMe, CTFs...), simplemente subiendo capturas de pantalla.
-✨ Características
+# AXIOM Reporter
 
-FuncionalidadDescripción🤖 Análisis IALLaMA-4 Vision analiza cada captura e identifica herramientas, IPs, puertos y vulnerabilidades reales💾 Sesiones persistentesLas sesiones se guardan localmente en sessions.json. Nunca pierdes tu trabajo🗂️ Historial de máquinasSidebar con todas tus sesiones anteriores, accesibles en cualquier momento✏️ Edición de entradasPuedes editar o borrar cualquier entrada generada por la IA📝 Notas manualesAñade contexto a cada captura antes de analizarla🎯 SeveridadEtiqueta cada hallazgo como Crítico / Alto / Medio / Bajo / Informativo📋 Resumen ejecutivoLa IA genera automáticamente un párrafo ejecutivo de toda la sesión📄 Exportar a PDFInforme profesional listo para imprimir con tu firma🔮 Exportar a ObsidianMarkdown con imágenes listas para importar en tu vault🔒 100% local y privadoLa app corre en tu máquina. Tus capturas nunca salen de tu red
+AXIOM Reporter es una herramienta de documentacion asistida por IA para pentesters y estudiantes de ciberseguridad. Permite generar informes mientras se trabaja sobre una maquina de Hack The Box, TryHackMe, un CTF o un laboratorio propio, simplemente subiendo capturas de pantalla.
 
+## Caracteristicas
 
-🖼️ Demo
+| Funcionalidad | Descripcion |
+| --- | --- |
+| Analisis con IA | LLaMA 4 Vision analiza cada captura e identifica herramientas, IP, puertos y vulnerabilidades. |
+| Sesiones persistentes | Las sesiones se guardan localmente en `sessions.json`. |
+| Historial de maquinas | La barra lateral permite recuperar sesiones anteriores. |
+| Edicion de entradas | Cada entrada generada por la IA se puede editar o eliminar. |
+| Notas manuales | Se puede anadir contexto antes de analizar una captura. |
+| Severidad | Los hallazgos se clasifican como Critico, Alto, Medio, Bajo o Informativo. |
+| Resumen ejecutivo | La IA genera un resumen de los hallazgos de la sesion. |
+| Exportacion a PDF | Genera un informe preparado para imprimir o guardar como PDF. |
+| Exportacion a Obsidian | Descarga Markdown junto con las imagenes de la sesion. |
+| Almacenamiento local | Los datos se guardan en el equipo; las capturas solo se envian a Groq al solicitar un analisis. |
 
-Flujo de uso:
-1. Creas una sesión  →  "Lame — HackTheBox"
-2. Subes una captura de tu nmap
-3. La IA detecta: IP real, puertos reales, comando exacto
-4. Se genera el bloque del informe automáticamente
-5. Repites por cada paso del pentest
-6. Al terminar: exportas PDF o Markdown para Obsidian
+## Flujo de uso
 
-Ejemplo de análisis generado:
+1. Crea una sesion, por ejemplo, `Lame - Hack The Box`.
+2. Sube una captura de un escaneo de Nmap.
+3. La IA identifica los datos visibles, como la IP, los puertos y el comando.
+4. AXIOM genera una entrada para el informe.
+5. Repite el proceso para cada paso del pentest.
+6. Exporta el resultado como PDF o Markdown para Obsidian.
 
+Ejemplo de analisis generado:
+
+```text
 FASE: Reconocimiento
 HERRAMIENTA / COMANDO: sudo nmap -p- -sS -sC -sV --min-rate 5000 -n -vvv -Pn 172.17.0.2 -oN escaneo
 HALLAZGO:
   - IP: 172.17.0.2
   - Puertos abiertos: 22/tcp (SSH), 80/tcp (HTTP)
-ANÁLISIS TÉCNICO: El escaneo SYN stealth revela dos servicios activos.
-El puerto 22 sugiere acceso SSH potencialmente explotable si hay credenciales
-débiles. El puerto 80 indica presencia web — vector prioritario de ataque.
-SIGUIENTE PASO SUGERIDO: Enumerar el servicio web con gobuster/ffuf y
-verificar versión SSH con nmap --script=ssh2-enum-algos.
+ANALISIS TECNICO: El escaneo SYN stealth revela dos servicios activos.
+El puerto 22 sugiere acceso SSH potencialmente explotable si hay credenciales debiles. El puerto 80 indica presencia web y un posible vector de ataque.
+SIGUIENTE PASO SUGERIDO: Enumerar el servicio web con gobuster o ffuf y verificar la version de SSH con nmap --script=ssh2-enum-algos.
+```
 
+## Requisitos
 
-⚙️ Requisitos
+- Python 3.8 o superior.
+- Una cuenta de [Groq](https://console.groq.com/) y una API key.
+- Conexion a Internet para las llamadas a la API de Groq.
 
+## Instalacion
 
-Python 3.8 o superior
-Cuenta gratuita en Groq (sin tarjeta de crédito)
-Conexión a internet (solo para las llamadas a la API de Groq)
+### 1. Clonar el repositorio
 
+```bash
+git clone https://github.com/zafiro-exploit/-AXIOM-Reporter.git
+cd ./-AXIOM-Reporter
+```
 
+### 2. Crear y activar un entorno virtual
 
-🚀 Instalación
+Linux y macOS:
 
-1. Clona el repositorio
-
-git clone https://github.com/zafiro-exploit/-AXIOM-Reporter
-
-cd axiom-reporter
-
-2. Instala las dependencias
-
-pip install flask flask-cors requests
-
-3. Obtén tu API key de Groq (gratis)
-
-
-Ve a console.groq.com
-Crea una cuenta gratuita (no requiere tarjeta)
-Ve a API Keys → Create API Key
-Copia tu key (empieza por gsk_...)
-
-
-4. Configura la API key
-
-Linux / Mac:
-
-export GROQ_API_KEY="gsk_TU_KEY_AQUI"
-
-Para hacerlo permanente añádelo a tu ~/.bashrc o ~/.zshrc:
-
-echo 'export GROQ_API_KEY="gsk_TU_KEY_AQUI"' >> ~/.bashrc
-source ~/.bashrc
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
 Windows (PowerShell):
 
-[System.Environment]::SetEnvironmentVariable("GROQ_API_KEY","gsk_TU_KEY_AQUI","User")
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-Cierra y vuelve a abrir PowerShell para que se aplique.
+Al activarlo, normalmente aparecera `(.venv)` al principio de la linea de comandos. Para salir del entorno virtual, ejecuta `deactivate`.
 
-5. Lanza la app
+### 3. Instalar las dependencias
 
+Con el entorno virtual activo:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+### 4. Configurar la API key de Groq
+
+1. Accede a [Groq Console](https://console.groq.com/).
+2. Crea una cuenta o inicia sesion.
+3. Abre **API Keys**, selecciona **Create API Key** y copia la clave.
+
+Define la variable solo para la terminal actual.
+
+Linux y macOS:
+
+```bash
+export GROQ_API_KEY="gsk_TU_KEY_AQUI"
+```
+
+Windows (PowerShell):
+
+```powershell
+$env:GROQ_API_KEY = "gsk_TU_KEY_AQUI"
+```
+
+### 5. Iniciar la aplicacion
+
+```bash
 python app.py
+```
 
-El navegador se abrirá automáticamente en http://localhost:5000
+La aplicacion intentara abrir automaticamente [`http://localhost:5000`](http://localhost:5000) en el navegador.
 
+## Uso
 
-📖 Uso
+### Crear una sesion
 
-Crear una sesión
+Pulsa **+ Nueva sesion** en la barra lateral e introduce el nombre de la maquina.
 
-Haz clic en + Nueva sesión en el sidebar e introduce el nombre de la máquina.
+### Analizar una captura
 
-Añadir una captura
+1. Pulsa la zona de subida o arrastra una imagen sobre ella.
+2. Anade contexto opcional en el campo de notas.
+3. Selecciona la fase y la severidad del hallazgo.
+4. Pulsa **Analizar con IA**.
 
+### Editar entradas
 
-Haz clic en la zona de subida (o arrastra la imagen directamente)
-Añade contexto opcional en el campo de notas
-Selecciona la Fase y la Severidad del hallazgo
-Pulsa Analizar con IA
+Usa los botones **Editar** y **Borrar** de cada entrada para corregir el contenido generado.
 
+### Generar el resumen ejecutivo
 
-Editar entradas
+Pulsa **Resumen IA** para generar un parrafo con los hallazgos mas relevantes de la sesion.
 
-Cada entrada tiene botones de Editar y Borrar para corregir el análisis si es necesario.
+### Exportar
 
-Generar resumen ejecutivo
+- **Exportar PDF:** abre el informe en una ventana nueva. Usa `Ctrl+P` (o `Cmd+P` en macOS) y selecciona **Guardar como PDF**.
+- **Exportar Obsidian (.md):** descarga el archivo Markdown y las imagenes para moverlos al vault de Obsidian.
 
-Pulsa Resumen IA para que el modelo genere automáticamente un párrafo ejecutivo con los hallazgos más relevantes de toda la sesión.
+## Estructura del proyecto
 
-Exportar
+```text
+-AXIOM-Reporter/
+|-- app.py            # Servidor Flask e interfaz web
+|-- requirements.txt  # Dependencias de Python
+|-- sessions.json     # Datos locales; se crea al guardar una sesion
+|-- .gitignore        # Archivos excluidos del control de versiones
+`-- README.md         # Documentacion del proyecto
+```
 
+## Etica y privacidad
 
-Exportar PDF → Abre una ventana nueva con el informe. Usa Ctrl+P → Guardar como PDF.
-Exportar Obsidian (.md) → Descarga el .md y todas las imágenes. Muévelos a tu vault de Obsidian.
+AXIOM Reporter esta disenado para utilizarse de forma explicita y controlada:
 
+- No captura la pantalla automaticamente.
+- No registra pulsaciones de teclado.
+- No monitoriza procesos en segundo plano.
+- El usuario decide que capturas se documentan.
+- Las imagenes se envian a la API de Groq solo al solicitar un analisis.
+- El resto de los datos se almacena localmente en `sessions.json`.
 
+La herramienta esta destinada a fines educativos y a entornos donde se cuente
+con autorizacion, como Hack The Box, TryHackMe o laboratorios propios.
 
-🗂️ Estructura del proyecto
+## Stack tecnico
 
-axiom-reporter/
-├── app.py           # Servidor Flask + interfaz web completa
-├── sessions.json    # Sesiones guardadas (se crea automáticamente)
-└── README.md        # Este archivo
+| Componente | Tecnologia |
+| --- | --- |
+| Backend | Python y Flask |
+| Frontend | HTML, CSS y JavaScript sin frameworks |
+| Modelo de vision | `meta-llama/llama-4-scout-17b-16e-instruct` mediante la API de Groq |
+| Persistencia | JSON local |
+| Exportacion | Impresion HTML a PDF y Markdown |
 
+## Roadmap
 
-🔐 Ética y privacidad
+- [ ] Soporte multiusuario con autenticacion basica.
+- [ ] Integracion con la API de Notion.
+- [ ] Timeline visual de la sesion.
+- [ ] Arrastrar y soltar para reordenar entradas.
+- [ ] Selector de modo oscuro o claro.
+- [ ] Imagen Docker para facilitar el despliegue.
 
-AXIOM Reporter está diseñado con un enfoque explícitamente ético:
+## Autor
 
+**Zafiro**<br>
+Estudiante de ciberseguridad - Blue Team / Pentesting
 
-❌ No captura pantalla automáticamente
-❌ No registra pulsaciones de teclado
-❌ No monitoriza procesos en background
-✅ Tú decides qué capturas se documentan
-✅ Las imágenes solo se envían a la API de Groq en el momento del análisis
-✅ Todo el resto de datos se almacena localmente en tu máquina
+> Los informes son la parte mas tediosa del pentest. Esta herramienta los hace
+> automaticamente mientras hackeas.
 
+## Licencia
 
-
-Esta herramienta está pensada para uso educativo y en entornos de práctica legal como HackTheBox, TryHackMe o laboratorios propios.
-
-
-
-
-🛠️ Stack técnico
-
-ComponenteTecnologíaBackendPython + FlaskFrontendHTML/CSS/JS vanilla (sin frameworks)Modelo de visiónmeta-llama/llama-4-scout-17b-16e-instruct via Groq APIPersistenciaJSON localExportaciónHTML print-to-PDF + Markdown
-
-
-🗺️ Roadmap
-
-
- Soporte multi-usuario con autenticación básica
- Integración con Notion API para exportar directamente
- Timeline visual de la sesión
- Drag & drop para reordenar entradas
- Modo oscuro / claro
- Docker para despliegue rápido
-
-
-
-👤 Autor
-
-Zafiro
-Estudiante de ciberseguridad · Blue Team / Pentesting
-
-
-"Los informes son la parte más tediosa del pentest. Esta herramienta los hace automáticamente mientras hackeas."
-
-
-
-
-📄 Licencia
-
-MIT License — úsalo, modifícalo y compártelo libremente.
+MIT License. Puedes usar, modificar y compartir el proyecto conforme a sus terminos.
